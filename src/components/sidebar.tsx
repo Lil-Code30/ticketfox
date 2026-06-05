@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const NAV_ITEMS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -28,6 +29,7 @@ const NAV_ITEMS: { label: string; href: string; icon: LucideIcon }[] = [
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const { user, isLoaded } = useUser();
 
   return (
     <div className="flex h-full w-full flex-col bg-surface">
@@ -103,11 +105,17 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       {/* User profile */}
       <div className="shrink-0 border-t border-border px-4 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-primary">
-            IT
-          </div>
+          <UserButton 
+            appearance={{
+              elements: {
+                userButtonAvatarBox: "h-8 w-8",
+              }
+            }}
+          />
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-text">User</span>
+            <span className="text-sm font-medium text-text truncate max-w-[150px]">
+              {isLoaded ? user?.fullName || user?.primaryEmailAddress?.emailAddress || "User" : "Loading..."}
+            </span>
             <span className="text-xs text-text-faint">IT Technician</span>
           </div>
         </div>

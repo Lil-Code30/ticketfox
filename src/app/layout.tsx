@@ -21,6 +21,8 @@ export const metadata: Metadata = {
     "TicketFox — A structured IT knowledge operating system for support teams.",
 };
 
+import { dark } from "@clerk/themes";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,7 +34,13 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
-        <ClerkProvider>{children}</ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            baseTheme: dark,
+          }}
+        >
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );
