@@ -71,22 +71,23 @@ export function TagForm({ open, onOpenChange, tag, onSave }: TagFormProps) {
 
           <div className="flex flex-col gap-2">
             <Label className="text-sm text-text">Color</Label>
-            <div className="flex flex-wrap gap-2">
-              {TAG_COLORS.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setColor(c)}
-                  className={cn(
-                    "h-7 w-7 rounded-full border-2 transition-all",
-                    color === c
-                      ? "border-text scale-110"
-                      : "border-transparent hover:scale-105"
-                  )}
-                  style={{ backgroundColor: c }}
-                  aria-label={`Select color ${c}`}
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-10 overflow-hidden rounded-full border border-border shrink-0 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background transition-all">
+                <input
+                  type="color"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  className="absolute -inset-2 h-14 w-14 cursor-pointer appearance-none bg-transparent border-0 p-0"
+                  aria-label="Select custom color"
                 />
-              ))}
+              </div>
+              <Input
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                placeholder="#000000"
+                className="border-border bg-background text-text uppercase font-mono focus:border-primary"
+                maxLength={7}
+              />
             </div>
           </div>
 
