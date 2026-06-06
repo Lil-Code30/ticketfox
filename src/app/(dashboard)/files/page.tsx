@@ -8,7 +8,7 @@ import { SearchInput } from "@/components/search-input";
 import { EmptyState } from "@/components/empty-state";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { FileUploader } from "@/components/files/file-uploader";
-import { MOCK_FILES } from "@/lib/mock-data";
+
 import type { FileRecord, FileType } from "@/types";
 import { FILE_TYPE_CONFIG } from "@/types";
 
@@ -34,7 +34,7 @@ function getFileIcon(type: FileType) {
 }
 
 export default function FilesPage() {
-  const [files, setFiles] = useState<FileRecord[]>(MOCK_FILES);
+  const [files, setFiles] = useState<FileRecord[]>([]);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<FileRecord | null>(null);
 

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import type { KnowledgeType } from "@/types";
 import { KNOWLEDGE_TYPE_CONFIG } from "@/types";
-import { MOCK_CATEGORIES, MOCK_TAGS } from "@/lib/mock-data";
 
 interface KnowledgeFiltersProps {
   searchQuery: string;
@@ -20,6 +19,7 @@ interface KnowledgeFiltersProps {
   onTypeFilterChange: (val: string) => void;
   categoryFilter: string;
   onCategoryFilterChange: (val: string) => void;
+  categories: any[];
 }
 
 export function KnowledgeFilters({
@@ -29,6 +29,7 @@ export function KnowledgeFilters({
   onTypeFilterChange,
   categoryFilter,
   onCategoryFilterChange,
+  categories,
 }: KnowledgeFiltersProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -79,7 +80,7 @@ export function KnowledgeFilters({
             <SelectItem value="ALL" className="text-text hover:bg-surface-2 focus:bg-surface-2 cursor-pointer">
               All Categories
             </SelectItem>
-            {MOCK_CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <SelectItem
                 key={cat.id}
                 value={cat.id}

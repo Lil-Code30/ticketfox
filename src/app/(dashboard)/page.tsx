@@ -14,8 +14,23 @@ import {
   Upload
 } from "lucide-react";
 import Link from "next/link";
+import { getDashboardMetrics } from "@/app/actions/dashboard";
 
-export default function DashboardPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DashboardPage() {
+  const { data, success } = await getDashboardMetrics();
+  
+  const counts = data?.counts || {
+    totalEntries: 0,
+    incidents: 0,
+    documentation: 0,
+    resources: 0,
+    notes: 0,
+    scripts: 0,
+  };
+
+  const recentActivity = data?.recentActivity || [];
   return (
     <div className="flex flex-col gap-8">
       {/* Header */}
@@ -34,38 +49,38 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
             <DashboardMetricCard
               label="Total Entries"
-              value={0}
+              value={counts.totalEntries}
               icon={BookOpen}
               description="Knowledge entries in the system"
               featured
             />
             <DashboardMetricCard
               label="Incidents"
-              value={0}
+              value={counts.incidents}
               icon={AlertTriangle}
               description="Documented incidents"
             />
             <DashboardMetricCard
               label="Documentation"
-              value={0}
+              value={counts.documentation}
               icon={FileText}
               description="Reference documents"
             />
             <DashboardMetricCard
               label="Resources"
-              value={0}
+              value={counts.resources}
               icon={Link2}
               description="External resources"
             />
             <DashboardMetricCard
               label="Notes"
-              value={0}
+              value={counts.notes}
               icon={StickyNote}
               description="Quick notes"
             />
             <DashboardMetricCard
               label="Scripts"
-              value={0}
+              value={counts.scripts}
               icon={Terminal}
               description="Automation snippets"
             />
@@ -80,7 +95,7 @@ export default function DashboardPage() {
               </Link>
             </div>
             {/* Example with empty state: */}
-            <ActivityList items={[]} />
+            <ActivityList items={recentActivity as any} />
           </section>
 
         </div>
