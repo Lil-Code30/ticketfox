@@ -39,9 +39,12 @@ export function SortableBlock({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="group relative flex gap-2 rounded-xl border border-border bg-surface px-4 py-3 transition-colors hover:border-text-faint/30"
+      className="group flex flex-col gap-1 rounded-xl border border-border bg-surface px-4 pb-4 pt-2 transition-colors hover:border-text-faint/30"
     >
-      <div className="absolute -left-1 top-3">
+      <div className="flex items-center justify-between h-8 -mx-2">
+        <div className="text-[10px] font-semibold tracking-wider text-text-faint uppercase px-2 opacity-0 transition-opacity group-hover:opacity-100">
+          Block
+        </div>
         <BlockToolbar
           blockType={block.type}
           onChangeType={(type) => onTypeChange(block.id, type)}
@@ -50,7 +53,7 @@ export function SortableBlock({
         />
       </div>
 
-      <div className="ml-20 flex-1 min-w-0">
+      <div className="flex-1 min-w-0">
         <BlockRenderer
           block={block}
           onChange={(content) => onContentChange(block.id, content)}
