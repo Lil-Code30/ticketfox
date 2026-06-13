@@ -68,7 +68,7 @@ export function KnowledgeForm({
         blocks: blocks.map((b, i) => ({
           type: b.type,
           order: i, // Ensure correct order
-          content: b.content,
+          content: b.content ?? undefined,
           metadata: b.metadata,
         })),
         // we omit tags and files for now in this iteration
