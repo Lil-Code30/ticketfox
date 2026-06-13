@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function KnowledgeDetailPage({ params }: { params: { id: string } }) {
-  const { data, success } = await getKnowledgeById(params.id);
+export default async function KnowledgeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const { data, success } = await getKnowledgeById(id);
 
   if (!success || !data) {
     notFound();

@@ -25,9 +25,11 @@ import { toast } from "sonner";
 export function KnowledgeForm({
   initialData,
   categories,
+  tags = [],
 }: {
   initialData?: any;
   categories: any[];
+  tags?: any[];
 }) {
   const router = useRouter();
   const isEditing = !!initialData;
@@ -37,6 +39,9 @@ export function KnowledgeForm({
   const [summary, setSummary] = useState(initialData?.summary ?? "");
   const [type, setType] = useState<KnowledgeType>(initialData?.type ?? "INCIDENT");
   const [category, setCategory] = useState<string>(initialData?.categoryId ?? "");
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    initialData?.tags?.map((t: any) => t.tag.id) ?? []
+  );
   const [blocks, setBlocks] = useState<Block[]>(initialData?.blocks ?? []);
   const [files, setFiles] = useState<FileRecord[]>([]); // We could initialize with initialData.attachments if we supported files
 
@@ -65,13 +70,14 @@ export function KnowledgeForm({
         type,
         status,
         categoryId: category || undefined,
+        tags: selectedTags,
         blocks: blocks.map((b, i) => ({
           type: b.type,
           order: i, // Ensure correct order
           content: b.content ?? undefined,
           metadata: b.metadata,
         })),
-        // we omit tags and files for now in this iteration
+        // we omit files for now in this iteration
       };
 
       if (isEditing) {
@@ -196,6 +202,39 @@ export function KnowledgeForm({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label className="text-sm text-text">Tags</Label>
+            {tags.length === 0 ? (
+              <p className="text-sm text-text-muted">No tags available.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2 mt-1">
+                {tags.map((tag) => {
+                  const isSelected = selectedTags.includes(tag.id);
+                  return (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedTags(prev => 
+                          isSelected 
+                            ? prev.filter(id => id !== tag.id)
+                            : [...prev, tag.id]
+                        );
+                      }}
+                      className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                        isSelected
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border bg-surface-2 text-text-muted hover:border-text-faint hover:text-text"
+                      }`}
+                    >
+                      {tag.name}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 

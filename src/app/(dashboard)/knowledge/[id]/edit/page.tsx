@@ -1,14 +1,17 @@
 import { getKnowledgeById } from "@/app/actions/knowledge";
 import { getCategories } from "@/app/actions/categories";
+import { getTags } from "@/app/actions/tags";
 import { KnowledgeForm } from "@/components/knowledge/knowledge-form";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditKnowledgePage({ params }: { params: { id: string } }) {
-  const [knowledgeRes, categoriesRes] = await Promise.all([
-    getKnowledgeById(params.id),
+export default async function EditKnowledgePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [knowledgeRes, categoriesRes, tagsRes] = await Promise.all([
+    getKnowledgeById(id),
     getCategories(),
+    getTags(),
   ]);
 
   if (!knowledgeRes.success || !knowledgeRes.data) {
@@ -27,6 +30,7 @@ export default async function EditKnowledgePage({ params }: { params: { id: stri
     <KnowledgeForm 
       initialData={knowledgeRes.data} 
       categories={categoriesRes.data || []} 
+      tags={tagsRes.data || []}
     />
   );
 }

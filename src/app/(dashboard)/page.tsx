@@ -11,7 +11,8 @@ import {
   Plus,
   FolderOpen,
   Tag,
-  Upload
+  Upload,
+  CheckSquare
 } from "lucide-react";
 import Link from "next/link";
 import { getDashboardMetrics } from "@/app/actions/dashboard";
@@ -94,8 +95,25 @@ export default async function DashboardPage() {
                 View All
               </Link>
             </div>
-            {/* Example with empty state: */}
-            <ActivityList items={recentActivity as any} />
+            <ActivityList items={recentActivity.map((r: any) => {
+              let Icon = FileText;
+              switch (r.type) {
+                case "INCIDENT": Icon = AlertTriangle; break;
+                case "DOCUMENTATION": Icon = FileText; break;
+                case "RESOURCE": Icon = Link2; break;
+                case "NOTE": Icon = StickyNote; break;
+                case "CHECKLIST": Icon = CheckSquare; break;
+                case "SCRIPT": Icon = Terminal; break;
+              }
+              return {
+                id: r.id,
+                icon: Icon,
+                title: r.title,
+                type: r.type,
+                category: r.category?.name || "Uncategorized",
+                date: new Date(r.createdAt).toLocaleDateString(),
+              };
+            })} />
           </section>
 
         </div>

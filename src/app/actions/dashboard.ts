@@ -24,6 +24,9 @@ export async function getDashboardMetrics() {
         title: true,
         type: true,
         createdAt: true,
+        category: {
+          select: { name: true }
+        },
         author: {
           select: {
             firstName: true,
